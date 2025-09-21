@@ -27,13 +27,14 @@ func NewApp(db *sql.DB) *App {
 
 	fileHandler := handlers.NewFileHandler(fileSvc)
 
-	app:= &App{
+	app := &App{
 		db:          db,
 		apimux:      http.NewServeMux(),
 		fileHandler: fileHandler,
 	}
 
-	app.apimux.HandleFunc("POST "+baseURL+"/upload",app.fileHandler.UploadFile)
+	app.apimux.HandleFunc("POST "+baseURL+"/upload", app.fileHandler.UploadFile)
+	app.apimux.HandleFunc("GET "+baseURL+"/files/{id}/download", app.fileHandler.DownloadFileHandler)
 
 	return app
 }

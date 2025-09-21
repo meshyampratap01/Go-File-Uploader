@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/meshyampratap01/fileUploader/internal/models"
 	"github.com/meshyampratap01/fileUploader/internal/repository"
 )
 
@@ -17,12 +18,14 @@ func NewFileService(repo *repository.FileRepository) *FileService {
 	}
 }
 
-func (fs *FileService) SaveFiletoDB(fileContent io.Reader,filename string) (error){
-	data,err:=io.ReadAll(fileContent)
-	if err!=nil{
-		return fmt.Errorf("unable to read file content: %v",err)
+func (fs *FileService) SaveFiletoDB(fileContent io.Reader, filename string) error {
+	data, err := io.ReadAll(fileContent)
+	if err != nil {
+		return fmt.Errorf("unable to read file content: %v", err)
 	}
-	return fs.fileRepo.SaveFile(data,filename)
+	return fs.fileRepo.SaveFile(data, filename)
 }
 
-// func (fs *FileService) GetFileFromDB(id int) (
+func (fs *FileService) GetFileByID(id int) (*models.File, error) {
+	return fs.fileRepo.GetFileByID(id)
+}
