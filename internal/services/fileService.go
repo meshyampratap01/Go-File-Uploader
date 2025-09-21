@@ -18,10 +18,10 @@ func NewFileService(repo *repository.FileRepository) *FileService {
 	}
 }
 
-func (fs *FileService) SaveFiletoDB(fileContent io.Reader, filename string) error {
+func (fs *FileService) SaveFiletoDB(fileContent io.Reader, filename string) (int, error) {
 	data, err := io.ReadAll(fileContent)
 	if err != nil {
-		return fmt.Errorf("unable to read file content: %v", err)
+		return 0, fmt.Errorf("unable to read file content: %v", err)
 	}
 	return fs.fileRepo.SaveFile(data, filename)
 }

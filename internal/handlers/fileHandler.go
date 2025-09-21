@@ -34,14 +34,15 @@ func (fh *FileHandler) UploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	if err := fh.fileService.SaveFiletoDB(file, header.Filename); err != nil {
+	fileID, err := fh.fileService.SaveFiletoDB(file, header.Filename)
+	if err != nil {
 		newErr := fmt.Sprintf("unable to save file: %v", err)
 		http.Error(w, newErr, http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "File uploaded successfully")
+	fmt.Fprintf(w, "File uploaded successfully. File ID: %d", fileID)
 }
 
 func (fh *FileHandler) DownloadFileHandler(w http.ResponseWriter, r *http.Request) {
